@@ -1,5 +1,5 @@
 #!/bin/bash
-# build_kernel.sh - 複数のアーキテクチャ用に Linux カーネル 6.19.2 をコンパイル
+# build_kernel.sh - 複数のアーキテクチャ用に Linux カーネルをコンパイル
 
 set -e
 
