@@ -14,7 +14,8 @@ if [ -z "${KERNEL_VERSION}" ]; then
     echo "[エラー] ${CONFIG_FILE} からカーネルバージョンが読み取れませんでした。"
     exit 1
 fi
-KERNEL_URL="https://cdn.kernel.org/pub/linux/kernel/v7.x/linux-${KERNEL_VERSION}.tar.xz"
+MAJOR_VERSION=$(echo "${KERNEL_VERSION}" | cut -d. -f1)
+KERNEL_URL="https://cdn.kernel.org/pub/linux/kernel/v${MAJOR_VERSION}.x/linux-${KERNEL_VERSION}.tar.xz"
 
 echo "Linux Kernel ${KERNEL_VERSION} ビルドプロセスを開始。"
 
