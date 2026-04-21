@@ -64,6 +64,7 @@ ln -sf horiz-pkg "$BIN_DIR/pkg"
 ln -sf horiz-utils "$BIN_DIR/ls"
 ln -sf horiz-utils "$BIN_DIR/cat"
 ln -sf horiz-utils "$BIN_DIR/echo"
+ln -sf horiz-utils "$BIN_DIR/chmod"
 
 # rootfs スケルトン (設定ファイル等) の適用
 if [ -d "rootfs" ]; then
