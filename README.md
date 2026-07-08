@@ -4,5 +4,8 @@
 
 ## ホライズちゃん かわいい
 
-![horiz 1](assets/images/horiz%201.webp)
-![horiz 2](assets/images/horiz%202.webp)
+<p align="center">
+  <img src="assets/images/horiz%201.webp" width="45%" alt="horiz 1">
+  <img src="assets/images/horiz%202.webp" width="45%" alt="horiz 2">
+</p>
+
