@@ -8,10 +8,10 @@ mod sys;
 
 use logger::{log_message, LogLevel};
 use session::{login_prompt, run_session};
-use sys::{mount_fs, setup_network};
+use sys::{mount_fs, setup_network, supervise_services};
 
 fn main() {
-    println!("--- HorizOS Core Initializing (Enhanced Security) ---");
+    println!("--- HorizOS Core Initializing (Supervision & System Control Enhanced) ---");
 
     // シグナルハンドリングの初期化
     #[cfg(target_os = "linux")]
@@ -38,16 +38,18 @@ fn main() {
 
     // 必須ディレクトリの作成
     let _ = fs::create_dir_all("/var/log");
+    let _ = fs::create_dir_all("/etc/horiz");
 
     // 2. ネットワークセットアップ
     setup_network();
 
-    log_message(LogLevel::Info, "システム初期化完了。セキュリティプロファイル適用済。");
+    // 3. デーモンサービスの起動と監視
+    supervise_services();
+
+    log_message(LogLevel::Info, "システム初期化およびサービス起動完了。プロファイル適用済。");
 
     loop {
         let (user, uid, gid) = login_prompt();
         run_session(&user, uid, gid);
     }
 }
-
-

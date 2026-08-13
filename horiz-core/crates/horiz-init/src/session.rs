@@ -61,6 +61,13 @@ pub fn login_prompt() -> (String, u32, u32) {
 
         if username.is_empty() { continue; }
 
+        if username == "reboot" {
+            crate::sys::shutdown_system(true);
+        } else if username == "poweroff" || username == "shutdown" {
+            crate::sys::shutdown_system(false);
+        }
+
+
         print!("password: ");
         io::stdout().flush().unwrap();
         

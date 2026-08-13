@@ -1,6 +1,7 @@
 #[cfg(target_os = "linux")]
 use std::ffi::CString;
 
+use std::fs;
 use std::process::Command;
 use std::thread;
 use std::time::Duration;
@@ -71,4 +72,52 @@ pub fn reap_zombies() {
             log_message(LogLevel::Info, &format!("ゾンビプロセスを回収: PID {}", pid));
         }
     }
+}
+
+/// /etc/horiz/services.conf からサービス設定を読み込み、バックグラウンド起動および死活監視を実施
+pub fn supervise_services() {
+    let conf_path = "/etc/horiz/services.conf";
+    if let Ok(contents) = fs::read_to_string(conf_path) {
+        for line in contents.lines() {
+            let line = line.trim();
+            if line.is_empty() || line.starts_with('#') { continue; }
+
+            let parts: Vec<&str> = line.split_whitespace().collect();
+            if parts.is_empty() { continue; }
+
+            let service_name = parts[0];
+            let args = &parts[1..];
+
+            // 簡易サービス管理: バックグラウンド起動を試行
+            log_message(LogLevel::Info, &format!("サービスプロファイルを確認中: {}", service_name));
+            let _ = Command::new(service_name)
+                .args(args)
+                .spawn();
+        }
+    }
+}
+
+/// システムの再起動または電源シャットダウン
+pub fn shutdown_system(_reboot: bool) -> ! {
+
+    log_message(LogLevel::Info, "全プロセスへ SIGTERM を送信中...");
+    #[cfg(target_os = "linux")]
+    unsafe {
+        libc::sync();
+        libc::kill(-1, libc::SIGTERM);
+        thread::sleep(Duration::from_millis(500));
+        libc::kill(-1, libc::SIGKILL);
+
+        let cmd = if _reboot {
+            libc::LINUX_REBOOT_CMD_RESTART
+        } else {
+            libc::LINUX_REBOOT_CMD_POWER_OFF
+        };
+        log_message(LogLevel::Info, if _reboot { "システムを再起動します。" } else { "システムを停止します。" });
+
+        libc::reboot(cmd);
+    }
+
+    log_message(LogLevel::Warn, "シャットダウン呼び出しを完了。終了プロセスへ移行します。");
+    std::process::exit(0);
 }

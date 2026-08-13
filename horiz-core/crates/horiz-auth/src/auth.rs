@@ -75,6 +75,44 @@ pub fn generate_salt() -> io::Result<String> {
     Ok(base64_encode(&buf))
 }
 
+pub fn change_password(username: &str, old_password: &str, new_password: &str) -> io::Result<bool> {
+    if !verify_login(username, old_password)? {
+        return Ok(false);
+    }
+
+    let shadow_path = "/etc/shadow";
+    let tmp_path = "/etc/shadow.tmp";
+
+    let file = fs::File::open(shadow_path)?;
+    let reader = io::BufReader::new(file);
+    let mut lines = Vec::new();
+
+    let new_salt = generate_salt().unwrap_or_else(|_| "default_salt".to_string());
+    let new_entry = generate_shadow_entry(new_password, &new_salt);
+
+    for line in reader.lines() {
+        let line = line?;
+        let parts: Vec<&str> = line.split(':').collect();
+        if !parts.is_empty() && parts[0] == username {
+            let mut new_parts = parts.clone();
+            new_parts[1] = &new_entry;
+            lines.push(new_parts.join(":"));
+        } else {
+            lines.push(line);
+        }
+    }
+
+    let mut tmp_file = fs::File::create(tmp_path)?;
+    for l in lines {
+        use std::io::Write;
+        writeln!(tmp_file, "{}", l)?;
+    }
+
+    fs::rename(tmp_path, shadow_path)?;
+    Ok(true)
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;

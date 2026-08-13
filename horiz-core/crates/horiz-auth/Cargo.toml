@@ -1,8 +1,8 @@
 [package]
 name = "horiz-auth"
-version = "1.4.6"
+version = "1.4.7"
 edition = "2024"
 
 [dependencies]
-# 外部依存ゼロ (Zero-Dependency)
-# すべてのロジックを Rust 標準ライブラリ (std) のみで独自実装
+libc = "0.2"
+

@@ -1,6 +1,8 @@
 [package]
 name = "horiz-utils"
-version = "1.4.6"
+version = "1.4.7"
 edition = "2024"
 
 [dependencies]
+libc = "0.2"
+

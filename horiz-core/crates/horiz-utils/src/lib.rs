@@ -1,12 +1,35 @@
 pub mod cat;
 pub mod chmod;
+pub mod cp;
 pub mod date;
 pub mod echo;
+pub mod grep;
+pub mod head;
+pub mod kill;
 pub mod ls;
+pub mod mkdir;
+pub mod mv;
+pub mod ps;
+pub mod rm;
+pub mod rmdir;
+pub mod tail;
+pub mod touch;
+pub mod wc;
 
 pub use cat::cat;
 pub use chmod::chmod;
+pub use cp::cp;
 pub use date::{date, get_timezone_info, parse_timezone_spec, parse_tzif};
 pub use echo::echo;
+pub use grep::grep;
+pub use head::head;
+pub use kill::kill;
 pub use ls::ls;
-
+pub use mkdir::mkdir;
+pub use mv::mv;
+pub use ps::ps;
+pub use rm::rm;
+pub use rmdir::rmdir;
+pub use tail::tail;
+pub use touch::touch;
+pub use wc::wc;

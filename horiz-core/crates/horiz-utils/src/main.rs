@@ -21,33 +21,43 @@ fn main() {
         Vec::new()
     };
 
-    match target_cmd {
+    let res = match target_cmd {
         "ls" => {
             let path = remaining_args.get(0).map(|s| s.as_str()).unwrap_or(".");
-            if let Err(e) = horiz_utils::ls(path) {
-                eprintln!("ls: {}", e);
-            }
+            horiz_utils::ls(path)
         }
         "cat" => {
-            if !remaining_args.is_empty() {
-                if let Err(e) = horiz_utils::cat(remaining_args) {
-                    eprintln!("cat: {}", e);
-                }
+            if remaining_args.is_empty() {
+                Ok(())
+            } else {
+                horiz_utils::cat(remaining_args)
             }
         }
         "echo" => {
             horiz_utils::echo(remaining_args);
+            Ok(())
         }
-        "chmod" => {
-            if let Err(e) = horiz_utils::chmod(remaining_args) {
-                eprintln!("chmod: {}", e);
-            }
+        "chmod" => horiz_utils::chmod(remaining_args),
+        "date" => horiz_utils::date(),
+        "mkdir" => horiz_utils::mkdir(remaining_args),
+        "rmdir" => horiz_utils::rmdir(remaining_args),
+        "rm" => horiz_utils::rm(remaining_args),
+        "cp" => horiz_utils::cp(remaining_args),
+        "mv" => horiz_utils::mv(remaining_args),
+        "touch" => horiz_utils::touch(remaining_args),
+        "ps" => horiz_utils::ps(remaining_args),
+        "kill" => horiz_utils::kill(remaining_args),
+        "grep" => horiz_utils::grep(remaining_args),
+        "head" => horiz_utils::head(remaining_args),
+        "tail" => horiz_utils::tail(remaining_args),
+        "wc" => horiz_utils::wc(remaining_args),
+        _ => {
+            eprintln!("Unknown utility: {}", target_cmd);
+            Ok(())
         }
-        "date" => {
-            if let Err(e) = horiz_utils::date() {
-                eprintln!("date: {}", e);
-            }
-        }
-        _ => eprintln!("Unknown utility: {}", target_cmd),
+    };
+
+    if let Err(e) = res {
+        eprintln!("{}: {}", target_cmd, e);
     }
 }
