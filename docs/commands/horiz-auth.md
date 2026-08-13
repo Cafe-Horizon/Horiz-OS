@@ -28,3 +28,13 @@ match horiz_auth::verify_login(&username, &password) {
     Err(e) => { /* パスワードファイル読み込み等のシステムエラー */ },
 }
 ```
+
+## ソースコード構造
+
+`horiz-auth` は関心事の分離に従い、暗号化処理と認証ロジックがモジュール分割されている。
+
+- `src/lib.rs`: モジュール構成の定義および外部向け API の re-export
+- `src/sha256.rs`: ゼロ依存の独自 SHA-256 ハッシュ計算実装
+- `src/base64.rs`: ゼロ依存の独自 Base64 エンコード実装
+- `src/auth.rs`: パスワードハッシュ化・10,000回ストレッチング、定数時間比較検証 (`verify_login`)、CSPRNGソルト生成、shadowエントリ生成
+

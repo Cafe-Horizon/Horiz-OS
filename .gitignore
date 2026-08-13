@@ -10,6 +10,7 @@ horiz-core/target/
 
 # Local environment
 .env
+rootfs/etc/localtime
 
 # MacOS related
 .DS_Store

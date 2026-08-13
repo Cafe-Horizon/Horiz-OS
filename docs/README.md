@@ -34,12 +34,12 @@ x86_64, aarch64, riscv64, powerpc64le, s390x, mips64el の主要 6 種類のア�
 
 ## ディレクトリ構造
 
-- **horiz-core/**: Userland ロジック。システム本体の機能を実装するコア・コンポーネント。
-  - **crates/horiz-init**: システム初期化・特権管理・死活監視・構造化ロギング。 ([詳細リファレンス](commands/horiz-init.md))
+- **horiz-core/**: Userland ロジック。システム本体の機能を実装するコア・コンポーネント。各クレートは保守性と視認性を高めるためモジュール分割されている。
+  - **crates/horiz-init**: システム初期化・特権管理・死活監視・構造化ロギング (マウント・ログ・セッション管理をモジュール化)。 ([詳細リファレンス](commands/horiz-init.md))
   - **crates/horiz-pkg**: 原子的なパッケージ配置と署名検証を備えた管理システム。 ([詳細リファレンス](commands/horiz-pkg.md))
   - **crates/horiz-sh**: インタラクティブ・シェル。 ([詳細リファレンス](commands/horiz-sh.md))
-  - **crates/horiz-utils**: 基本的なコマンド群（ls, cat, echo, chmod, パス正規化等）。 ([詳細リファレンス](commands/horiz-utils.md))
-  - **crates/horiz-auth**: 定数時間比較と CSPRNG を備えた認証ライブラリ。 ([詳細リファレンス](commands/horiz-auth.md))
+  - **crates/horiz-utils**: 基本的なコマンド群（ls, cat, echo, chmod, date等をサブコマンド毎にモジュール化）。 ([詳細リファレンス](commands/horiz-utils.md))
+  - **crates/horiz-auth**: 定数時間比較と CSPRNG を備えた認証ライブラリ (SHA-256/Base64/認証ロジックをモジュール化)。 ([詳細リファレンス](commands/horiz-auth.md))
 - **scripts/**: 各種ビルド・自動化スクリプト。
 - **build.sh**: スクラッチビルドによる迅速な rootfs 構築・統合スクリプト。
 

@@ -65,6 +65,7 @@ ln -sf horiz-utils "$BIN_DIR/ls"
 ln -sf horiz-utils "$BIN_DIR/cat"
 ln -sf horiz-utils "$BIN_DIR/echo"
 ln -sf horiz-utils "$BIN_DIR/chmod"
+ln -sf horiz-utils "$BIN_DIR/date"
 
 # rootfs スケルトン (設定ファイル等) の適用
 if [ -d "rootfs" ]; then
@@ -84,6 +85,12 @@ fi
 echo "ファイル権限を強化中..."
 [ -f "$ROOTFS_DIR/etc/shadow" ] && chmod 600 "$ROOTFS_DIR/etc/shadow"
 [ -f "$ROOTFS_DIR/etc/passwd" ] && chmod 644 "$ROOTFS_DIR/etc/passwd"
+[ -f "$ROOTFS_DIR/etc/timezone" ] && chmod 644 "$ROOTFS_DIR/etc/timezone"
+
+# /etc/localtime (Asia/Tokyo TZif バイナリ) の生成
+echo "タイムゾーン (/etc/localtime: Asia/Tokyo) を生成中..."
+printf '\x54\x5A\x69\x66\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x00\x00\x00\x01\x00\x00\x00\x04\x00\x00\x00\x00\x00\x00\x00\x7E\x90\x00\x00\x4A\x53\x54\x00' > "$ROOTFS_DIR/etc/localtime"
+chmod 644 "$ROOTFS_DIR/etc/localtime"
 [ -d "$ROOTFS_DIR/root" ] && chmod 700 "$ROOTFS_DIR/root"
 [ -d "$ROOTFS_DIR/tmp" ] && chmod 1777 "$ROOTFS_DIR/tmp"
 chmod 755 "$ROOTFS_DIR/bin"/*
