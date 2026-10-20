@@ -180,13 +180,14 @@ jobs:
 
           # Kernel Image
           # x86_64: bzImage, arm64/riscv64: Image, s390: bzImage, mips: vmlinux.bin, powerpc: zImage
+          KERNEL_VERSION=$(awk -F '=' '/^\[kernel\]/{f=1} f&&/^version/{print $2; exit}' build_config.ini | tr -d ' \"\r')
           KERNEL_PATH=""
-          if [ "${{ matrix.arch }}" = "x86_64" ]; then KERNEL_PATH="build/linux-6.19.3/arch/x86/boot/bzImage"; fi
-          if [ "${{ matrix.arch }}" = "aarch64" ]; then KERNEL_PATH="build/linux-6.19.3/arch/arm64/boot/Image"; fi
-          if [ "${{ matrix.arch }}" = "riscv64" ]; then KERNEL_PATH="build/linux-6.19.3/arch/riscv/boot/Image"; fi
-          if [ "${{ matrix.arch }}" = "s390x" ]; then KERNEL_PATH="build/linux-6.19.3/arch/s390/boot/bzImage"; fi
-          if [ "${{ matrix.arch }}" = "mips64el" ]; then KERNEL_PATH="build/linux-6.19.3/arch/mips/boot/vmlinux.bin"; fi
-          if [ "${{ matrix.arch }}" = "powerpc64le" ]; then KERNEL_PATH="build/linux-6.19.3/arch/powerpc/boot/zImage"; fi
+          if [ "${{ matrix.arch }}" = "x86_64" ]; then KERNEL_PATH="build/linux-${KERNEL_VERSION}/arch/x86/boot/bzImage"; fi
+          if [ "${{ matrix.arch }}" = "aarch64" ]; then KERNEL_PATH="build/linux-${KERNEL_VERSION}/arch/arm64/boot/Image"; fi
+          if [ "${{ matrix.arch }}" = "riscv64" ]; then KERNEL_PATH="build/linux-${KERNEL_VERSION}/arch/riscv/boot/Image"; fi
+          if [ "${{ matrix.arch }}" = "s390x" ]; then KERNEL_PATH="build/linux-${KERNEL_VERSION}/arch/s390/boot/bzImage"; fi
+          if [ "${{ matrix.arch }}" = "mips64el" ]; then KERNEL_PATH="build/linux-${KERNEL_VERSION}/arch/mips/boot/vmlinux.bin"; fi
+          if [ "${{ matrix.arch }}" = "powerpc64le" ]; then KERNEL_PATH="build/linux-${KERNEL_VERSION}/arch/powerpc/boot/zImage"; fi
           
           if [ -f "$KERNEL_PATH" ]; then
             cp "$KERNEL_PATH" "horiz-kernel-${{ matrix.asset_suffix }}"
