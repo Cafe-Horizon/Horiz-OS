@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     gcc-riscv64-linux-gnu \
     gcc-powerpc64le-linux-gnu \
     gcc-s390x-linux-gnu \
-    gcc-mips64el-linux-gnu \
+    gcc-mips64el-linux-gnuabi64 \
     xorriso \
     grub-pc-bin \
     grub-common \
