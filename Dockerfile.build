@@ -23,13 +23,11 @@ RUN apt-get update && apt-get install -y \
     grub-common \
     mtools
 
-# Add musl targets for static linking
+# Add musl targets for static linking (Tier 1/2)
 RUN rustup target add x86_64-unknown-linux-musl
 RUN rustup target add aarch64-unknown-linux-musl
 RUN rustup target add riscv64gc-unknown-linux-musl
 RUN rustup target add powerpc64le-unknown-linux-musl
-RUN rustup target add s390x-unknown-linux-musl
-RUN rustup target add mips64el-unknown-linux-musl
 
 WORKDIR /horiz
 COPY . .
