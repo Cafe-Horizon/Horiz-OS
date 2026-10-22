@@ -52,7 +52,7 @@ pub fn read_password() -> String {
 
 pub fn login_prompt() -> (String, u32, u32) {
     loop {
-        println!("\n--- HorizOS Login ---");
+        println!("\n--- HorizOS v{} Login ---", env!("CARGO_PKG_VERSION"));
         print!("username: ");
         io::stdout().flush().unwrap();
         let mut username = String::new();

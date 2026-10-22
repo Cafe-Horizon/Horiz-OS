@@ -59,13 +59,15 @@ tar xzf horiz-rootfs.tar.gz -C "${INITRAMFS_DIR}"
 cp "${BUILD_DIR}/initrd.img" "${ISO_DIR}/boot/initrd.img"
 cp "$KERNEL_IMAGE" "${ISO_DIR}/boot/vmlinuz"
 
+OS_VERSION=$(awk -F '=' '/^\[workspace\.package\]/{f=1} f&&/^version/{print $2; exit}' horiz-core/Cargo.toml | tr -d ' "\r')
+
 # 3. GRUB 設定の作成
 echo "GRUB 設定ファイルを生成中..."
 cat <<EOF > "${ISO_DIR}/boot/grub/grub.cfg"
 set default=0
 set timeout=5
 
-menuentry "HorizOS (${ARCH})" {
+menuentry "HorizOS v${OS_VERSION} (${ARCH})" {
     linux /boot/vmlinuz quiet console=ttyS0 console=tty0
     initrd /boot/initrd.img
 }

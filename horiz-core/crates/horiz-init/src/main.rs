@@ -11,7 +11,7 @@ use session::{login_prompt, run_session};
 use sys::{mount_fs, setup_network, supervise_services};
 
 fn main() {
-    println!("--- HorizOS Core Initializing (Supervision & System Control Enhanced) ---");
+    println!("--- HorizOS Core v{} Initializing (Supervision & System Control Enhanced) ---", env!("CARGO_PKG_VERSION"));
 
     // シグナルハンドリングの初期化
     #[cfg(target_os = "linux")]

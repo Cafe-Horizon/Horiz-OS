@@ -4,14 +4,14 @@ version = 4
 
 [[package]]
 name = "horiz-auth"
-version = "1.4.7"
+version = "1.4.8"
 dependencies = [
  "libc",
 ]
 
 [[package]]
 name = "horiz-init"
-version = "1.4.7"
+version = "1.4.8"
 dependencies = [
  "horiz-auth",
  "libc",
@@ -19,18 +19,18 @@ dependencies = [
 
 [[package]]
 name = "horiz-pkg"
-version = "1.4.7"
+version = "1.4.8"
 
 [[package]]
 name = "horiz-sh"
-version = "1.4.7"
+version = "1.4.8"
 dependencies = [
  "libc",
 ]
 
 [[package]]
 name = "horiz-utils"
-version = "1.4.7"
+version = "1.4.8"
 dependencies = [
  "libc",
 ]

@@ -225,7 +225,7 @@ fn main() {
         .map(|s| s.trim().to_string())
         .unwrap_or_else(|_| "horiz".to_string());
 
-    println!("--- HorizOS Shell v1.5.0 (Pipeline & Signal Enhanced) ---");
+    println!("--- HorizOS Shell v{} (Pipeline & Signal Enhanced) ---", env!("CARGO_PKG_VERSION"));
 
     loop {
         let user = env::var("USER").unwrap_or_else(|_| "root".to_string());
@@ -292,7 +292,7 @@ fn main() {
                     continue;
                 }
                 "version" => {
-                    println!("HorizOS Shell v1.5.0 (Pipeline & Multi-Builtin Edition)");
+                    println!("HorizOS Shell v{} (Pipeline & Multi-Builtin Edition)", env!("CARGO_PKG_VERSION"));
                     continue;
                 }
                 _ => {}

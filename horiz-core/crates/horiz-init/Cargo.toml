@@ -1,9 +1,8 @@
 [package]
 name = "horiz-init"
-version = "1.4.7"
-edition = "2024"
+version.workspace = true
+edition.workspace = true
 
 [dependencies]
 libc = "0.2"
 horiz-auth = { path = "../horiz-auth" }
-

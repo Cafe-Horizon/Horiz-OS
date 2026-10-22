@@ -73,6 +73,19 @@ if [ -d "rootfs" ]; then
     cp -r rootfs/* "$ROOTFS_DIR/"
 fi
 
+# OS バージョン情報 (/etc/os-release, /etc/issue) の生成 (horiz-core/Cargo.toml を唯一の情報元とする)
+OS_VERSION=$(awk -F '=' '/^\[workspace\.package\]/{f=1} f&&/^version/{print $2; exit}' horiz-core/Cargo.toml | tr -d ' "\r')
+echo "OS バージョン情報 (/etc/os-release: v${OS_VERSION}) を生成中..."
+cat <<EOF > "$ROOTFS_DIR/etc/os-release"
+NAME="HorizOS"
+ID=horizos
+VERSION_ID="${OS_VERSION}"
+VERSION="${OS_VERSION}"
+PRETTY_NAME="HorizOS ${OS_VERSION}"
+HOME_URL="https://github.com/Cafe-Horizon/Horiz-OS"
+EOF
+echo "HorizOS ${OS_VERSION} \n \l" > "$ROOTFS_DIR/etc/issue"
+
 # HTTPS 通信のための CA 証明書の配置
 echo "CA 証明書を配置中..."
 mkdir -p "$ROOTFS_DIR/etc/ssl/certs"
@@ -86,6 +99,8 @@ echo "ファイル権限を強化中..."
 [ -f "$ROOTFS_DIR/etc/shadow" ] && chmod 600 "$ROOTFS_DIR/etc/shadow"
 [ -f "$ROOTFS_DIR/etc/passwd" ] && chmod 644 "$ROOTFS_DIR/etc/passwd"
 [ -f "$ROOTFS_DIR/etc/timezone" ] && chmod 644 "$ROOTFS_DIR/etc/timezone"
+[ -f "$ROOTFS_DIR/etc/os-release" ] && chmod 644 "$ROOTFS_DIR/etc/os-release"
+[ -f "$ROOTFS_DIR/etc/issue" ] && chmod 644 "$ROOTFS_DIR/etc/issue"
 
 # /etc/localtime (Asia/Tokyo TZif バイナリ) の生成
 echo "タイムゾーン (/etc/localtime: Asia/Tokyo) を生成中..."
